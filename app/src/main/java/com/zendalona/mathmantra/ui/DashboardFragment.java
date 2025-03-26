@@ -11,12 +11,15 @@ import android.view.ViewGroup;
 
 import com.zendalona.mathmantra.databinding.FragmentDashboardBinding;
 import com.zendalona.mathmantra.utils.FragmentNavigation;
+import com.zendalona.mathmantra.utils.SensorUtility;
+
+import java.util.Objects;
 
 public class DashboardFragment extends Fragment {
 
     private FragmentDashboardBinding binding;
     private FragmentNavigation navigationListener;
-
+    private SensorUtility sensorUtility ;
 
     @Override
     public void onAttach(Context context) {
@@ -33,7 +36,8 @@ public class DashboardFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
-
+        sensorUtility = new SensorUtility(requireContext());
+        binding.bell.setText(Objects.requireNonNull(sensorUtility.directionLiveData.getValue()));
         binding.ringBellCv.setOnClickListener(v -> {
             if (navigationListener != null) navigationListener.loadFragment(new RingBellFragment(),FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         });

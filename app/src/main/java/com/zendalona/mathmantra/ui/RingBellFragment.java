@@ -3,7 +3,6 @@ package com.zendalona.mathmantra.ui;
 import android.app.AlertDialog;
 import android.os.Bundle;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -15,16 +14,15 @@ import com.bumptech.glide.Glide;
 import com.zendalona.mathmantra.R;
 import com.zendalona.mathmantra.databinding.DialogResultBinding;
 import com.zendalona.mathmantra.databinding.FragmentRingBellBinding;
-import com.zendalona.mathmantra.utils.AccelerometerUtility;
+import com.zendalona.mathmantra.utils.SensorUtility;
 import com.zendalona.mathmantra.utils.RandomValueGenerator;
-import com.zendalona.mathmantra.utils.ResponseFeedbackDialog;
 import com.zendalona.mathmantra.utils.SoundEffectUtility;
 import com.zendalona.mathmantra.utils.TTSUtility;
 
 public class RingBellFragment extends Fragment {
 
     private FragmentRingBellBinding binding;
-    private AccelerometerUtility accelerometerUtility;
+    private SensorUtility sensorUtility;
     private SoundEffectUtility soundEffectUtility;
     private RandomValueGenerator randomValueGenerator;
     private TTSUtility tts;
@@ -38,7 +36,7 @@ public class RingBellFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         soundEffectUtility = SoundEffectUtility.getInstance(requireContext());
-        accelerometerUtility = new AccelerometerUtility(requireContext());
+        sensorUtility = new SensorUtility(requireContext());
     }
 
     @Override
@@ -108,7 +106,7 @@ public class RingBellFragment extends Fragment {
                     Log.d("Accelerometer Thread sleep Error",e.getLocalizedMessage());
                     e.printStackTrace();
                 }
-                if (accelerometerUtility.isDeviceShaken()) requireActivity().runOnUiThread(this::ringBell);
+                if (sensorUtility.isDeviceShaken()) requireActivity().runOnUiThread(this::ringBell);
             }
         }).start();
     }
@@ -116,7 +114,7 @@ public class RingBellFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        accelerometerUtility.unregisterListener();
+        sensorUtility.unregisterListener();
     }
 
     @Override
