@@ -2,8 +2,12 @@ package com.zendalona.mathmantra.ui;
 
 import android.content.Context;
 import android.os.Bundle;
+
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +41,16 @@ public class DashboardFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         sensorUtility = new SensorUtility(requireContext());
-        binding.bell.setText(Objects.requireNonNull(sensorUtility.directionLiveData.getValue()));
+
+        // Create the observer which updates the UI.
+        final Observer<String> nameObserver = new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable final String newName) {
+                // Update the UI
+               binding.bell.setText(newName);
+            }
+        };
+        sensorUtility.directionLiveData.observe(getViewLifecycleOwner(), nameObserver);
         binding.ringBellCv.setOnClickListener(v -> {
             if (navigationListener != null) navigationListener.loadFragment(new RingBellFragment(),FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         });
