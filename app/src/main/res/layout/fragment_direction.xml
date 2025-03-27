@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.DirectionFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/direction_hint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Move the phone"
+            android:textSize="24sp"
+            android:layout_margin="10dp"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/compass"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/show_direction_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:clickable="false"
+            android:focusable="false"
+            android:text="Point your phone to the North."
+            android:textAlignment="center"
+            android:textSize="48sp"
+            app:layout_constraintBottom_toTopOf="@+id/mole_up_siv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="50dp"/>
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/mole_up_siv"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="30dp"
+            android:clickable="false"
+            android:focusable="false"
+            android:src="@drawable/molepointingup"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="50dp"/>
+
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/compass"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/compass"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/show_direction_tv"
+
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

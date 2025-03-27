@@ -16,13 +16,14 @@ import com.zendalona.mathmantra.databinding.DialogResultBinding;
 import com.zendalona.mathmantra.databinding.FragmentRingBellBinding;
 import com.zendalona.mathmantra.utils.SensorUtility;
 import com.zendalona.mathmantra.utils.RandomValueGenerator;
+import com.zendalona.mathmantra.utils.ShakeDetectorUtility;
 import com.zendalona.mathmantra.utils.SoundEffectUtility;
 import com.zendalona.mathmantra.utils.TTSUtility;
 
 public class RingBellFragment extends Fragment {
 
     private FragmentRingBellBinding binding;
-    private SensorUtility sensorUtility;
+    private ShakeDetectorUtility shakeDetectorUtility;
     private SoundEffectUtility soundEffectUtility;
     private RandomValueGenerator randomValueGenerator;
     private TTSUtility tts;
@@ -36,7 +37,7 @@ public class RingBellFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         soundEffectUtility = SoundEffectUtility.getInstance(requireContext());
-        sensorUtility = new SensorUtility(requireContext());
+        shakeDetectorUtility = new ShakeDetectorUtility(requireContext());
     }
 
     @Override
@@ -106,7 +107,7 @@ public class RingBellFragment extends Fragment {
                     Log.d("Accelerometer Thread sleep Error",e.getLocalizedMessage());
                     e.printStackTrace();
                 }
-                if (sensorUtility.isDeviceShaken()) requireActivity().runOnUiThread(this::ringBell);
+                if (shakeDetectorUtility.isDeviceShaken()) requireActivity().runOnUiThread(this::ringBell);
             }
         }).start();
     }
@@ -114,7 +115,7 @@ public class RingBellFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        sensorUtility.unregisterListener();
+        shakeDetectorUtility.unregisterListener();
     }
 
     @Override

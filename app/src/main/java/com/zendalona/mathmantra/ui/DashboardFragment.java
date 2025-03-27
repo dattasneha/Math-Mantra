@@ -42,17 +42,8 @@ public class DashboardFragment extends Fragment {
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         sensorUtility = new SensorUtility(requireContext());
 
-        // Create the observer which updates the UI.
-        final Observer<String> nameObserver = new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable final String newName) {
-                // Update the UI
-               binding.bell.setText(newName);
-            }
-        };
-        sensorUtility.directionLiveData.observe(getViewLifecycleOwner(), nameObserver);
         binding.ringBellCv.setOnClickListener(v -> {
-            if (navigationListener != null) navigationListener.loadFragment(new RingBellFragment(),FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            if (navigationListener != null) navigationListener.loadFragment(new DirectionFragment(),FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         });
         binding.tapTablaCv.setOnClickListener(v -> {
             if (navigationListener != null) navigationListener.loadFragment(new TapTablaFragment(),FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
