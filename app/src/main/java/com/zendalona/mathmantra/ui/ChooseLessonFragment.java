@@ -137,6 +137,29 @@ public class ChooseLessonFragment extends Fragment {
             sendDataToNarratorFragment(contents);
         });
 
+        //Angle
+        binding.chooseLesson8.setOnClickListener(v -> {
+            contents.addAll(Arrays.asList("Introduction to Angles X, Y, Z: Angles X, Y, and Z typically refer to angles in a triangle where:\n" +
+                    "\n" +
+                    "Angle X = Opposite to side x\n" +
+                    "\n" +
+                    "Angle Y = Opposite to side y\n" +
+                    "\n" +
+                    "Angle Z = Opposite to side z\n" +
+                    "\n" +
+                    "No matter what, their sum is ALWAYS 180°.",
+                    "Once upon a time three Amit, Bhaskar, and Chitra decided to fly kites on the terrace of their apartment building. As they prepared their kites, they noticed a tall lamppost standing nearby and became curious about its height. They realized they could use their knowledge of trigonometry to find the answer.",
+                    "In this situation, we can model the scenario as a right-angled triangle:\n" +
+                            "\n" +
+                            "The distance from the friends to the base of the lamppost represents the adjacent side of the triangle (30 meters). The height of the lamppost represents the opposite side, which we need to find. The angle of elevation (45 degrees) is the angle between the adjacent side and the hypotenuse.",
+                    "To find the height of the lamppost, we can use the tangent function, which relates the opposite side to the adjacent side in a right-angled triangle:\n" +
+                            "\n" +
+                            "tan θ = opposite/adjacent\n" +
+                            "Therefore, tan 45° = height/ 30 meters\n" +
+                            "The friends discovered that the lamppost was 30 meters tall. "));
+            sendDataToNarratorFragment(contents);
+        });
+
 
         return binding.getRoot();
     }
