@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +44,7 @@ public class DirectionFragment extends Fragment implements DirectionChangeListen
         binding = FragmentDirectionBinding.inflate(inflater, container, false);
         random = new RandomValueGenerator();
         tts = new TTSUtility(requireActivity());
+        directionViewModel = new ViewModelProvider(this).get(DirectionViewModel.class);
         directionDetectorUtility = new DirectionDetectorUtility(requireContext(),this);
         generateNewQuiz();
         return binding.getRoot();
@@ -51,18 +53,24 @@ public class DirectionFragment extends Fragment implements DirectionChangeListen
     private void generateNewQuiz() {
         int topic = random.generateQuestionTopic();
         String question;
+        String direction;
         switch (topic) {
             case 1:
-                question = "Point your phone to the North.";
+                question = "Point to the West direction.";
+                direction = "West";
                 break;
             case 2:
                 question = "Which direction is East?";
+                direction = "East";
                 break;
             case 3:
                 question = "Can you point to South?";
+                direction = "South";
                 break;
             default:
-                question = "Point to the West direction.";
+                question = "Point your phone to the North.";
+                direction = "North";
+
         }
 
         binding.showDirectionTv.setText(question);
@@ -71,6 +79,7 @@ public class DirectionFragment extends Fragment implements DirectionChangeListen
         directionViewModel.azimuth.observe(getViewLifecycleOwner(), azimuth -> {
             if(azimuth != null) {
                 directionViewModel.updateCompass(azimuth);
+                binding.showDegree.setText(azimuth.intValue()+"°");
             }
         });
 
@@ -80,13 +89,28 @@ public class DirectionFragment extends Fragment implements DirectionChangeListen
             }
         });
 
-        if(Objects.equals(directionViewModel.currentAzimuth, directionViewModel.azimuth.getValue())) {
+
+        String getDirection = getDirectionFromAzimuth(directionViewModel.currentAzimuth);
+        if (direction.equals(getDirection)) {
             showResultDialog(true);
-        } else {
-            showResultDialog(false);
         }
+
     }
 
+
+    private String getDirectionFromAzimuth(float azimuth) {
+        if (azimuth >= 337.5 || azimuth < 22.5) {
+            return "North";
+        } else if (azimuth >= 67.5 && azimuth < 112.5) {
+            return "East";
+        } else if (azimuth >= 157.5 && azimuth < 202.5) {
+            return "South";
+        } else if (azimuth >= 247.5 && azimuth < 292.5) {
+            return "West";
+        } else {
+            return "Unknown";
+        }
+    }
     private void showResultDialog(boolean isCorrect) {
         String message = isCorrect ? "Right Answer" : "Wrong Answer";
         int gifResource = isCorrect ? R.drawable.right : R.drawable.wrong;

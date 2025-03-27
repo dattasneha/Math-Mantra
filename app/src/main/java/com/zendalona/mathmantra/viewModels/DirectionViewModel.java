@@ -22,13 +22,13 @@ public class DirectionViewModel extends ViewModel {
 
     public void updateCompass(float  azimuth) {
         RotateAnimation rotateAnimation = new RotateAnimation(
-                azimuth,
                 -currentAzimuth,
+                -azimuth,
                 Animation.RELATIVE_TO_SELF, 0.5f,
                 Animation.RELATIVE_TO_SELF, 0.5f
         );
 
-        rotateAnimation.setDuration(500);
+        rotateAnimation.setDuration(1000);
         rotateAnimation.setFillAfter(true);
 
         _animation.postValue(rotateAnimation);
