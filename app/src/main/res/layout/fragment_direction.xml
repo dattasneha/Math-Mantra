@@ -15,15 +15,26 @@
             android:id="@+id/direction_hint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Move the phone"
+            android:text="Rotate your phone"
             android:textAlignment="center"
-            android:textSize="24sp"
+            android:textSize="30sp"
             android:layout_margin="10dp"
             android:textColor="@color/black"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/compass"/>
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/compass"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/compass"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/show_direction_tv" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/show_direction_tv"
@@ -52,19 +63,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginBottom="50dp"/>
-
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/compass"
-            android:layout_width="180dp"
-            android:layout_height="180dp"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/compass"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/show_direction_tv"
-
-            />
 
 
         <com.google.android.material.textview.MaterialTextView

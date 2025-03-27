@@ -80,6 +80,12 @@ public class DirectionFragment extends Fragment implements DirectionChangeListen
             if(azimuth != null) {
                 directionViewModel.updateCompass(azimuth);
                 binding.showDegree.setText(azimuth.intValue()+"°");
+
+                String getDirection = getDirectionFromAzimuth(directionViewModel.currentAzimuth);
+                if (direction.equals(getDirection)) {
+                    showResultDialog(true);
+                    directionViewModel.azimuth.removeObservers(getViewLifecycleOwner());
+                }
             }
         });
 
@@ -89,11 +95,6 @@ public class DirectionFragment extends Fragment implements DirectionChangeListen
             }
         });
 
-
-        String getDirection = getDirectionFromAzimuth(directionViewModel.currentAzimuth);
-        if (direction.equals(getDirection)) {
-            showResultDialog(true);
-        }
 
     }
 
