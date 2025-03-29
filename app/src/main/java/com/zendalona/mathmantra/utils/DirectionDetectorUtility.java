@@ -6,6 +6,8 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
 import android.widget.Toast;
 
+import com.zendalona.mathmantra.listener.DirectionChangeListener;
+
 public class DirectionDetectorUtility extends SensorUtility{
     private Sensor accelerometer;
     private Sensor magnetometer;

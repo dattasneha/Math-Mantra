@@ -43,7 +43,7 @@ public class DashboardFragment extends Fragment {
         sensorUtility = new SensorUtility(requireContext());
 
         binding.ringBellCv.setOnClickListener(v -> {
-            if (navigationListener != null) navigationListener.loadFragment(new DirectionFragment(),FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            if (navigationListener != null) navigationListener.loadFragment(new DrawShapesFragment(),FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         });
         binding.tapTablaCv.setOnClickListener(v -> {
             if (navigationListener != null) navigationListener.loadFragment(new TapTablaFragment(),FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
