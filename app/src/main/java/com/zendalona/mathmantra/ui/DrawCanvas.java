@@ -16,12 +16,13 @@ import android.view.View;
 import com.google.mlkit.vision.digitalink.Ink;
 import com.zendalona.mathmantra.utils.RecognitionTask;
 import com.zendalona.mathmantra.utils.StrokeManager;
+import com.zendalona.mathmantra.utils.TTSUtility;
 
 import java.util.List;
 
 public class DrawCanvas extends View implements StrokeManager.ContentChangedListener {
     private static final String TAG = "MLKD.DrawingView";
-    private static final int STROKE_WIDTH_DP = 3;
+    private static final int STROKE_WIDTH_DP = 5;
     private static final int MIN_BB_WIDTH = 10;
     private static final int MIN_BB_HEIGHT = 10;
     private static final int MAX_BB_WIDTH = 256;
@@ -36,7 +37,7 @@ public class DrawCanvas extends View implements StrokeManager.ContentChangedList
     private Canvas drawCanvas;
     private Bitmap canvasBitmap;
     private StrokeManager strokeManager;
-
+    private TTSUtility tts;
     public DrawCanvas(Context context) {
         this(context, null);
     }
@@ -62,6 +63,7 @@ public class DrawCanvas extends View implements StrokeManager.ContentChangedList
 
         currentStroke = new Path();
         canvasPaint = new Paint(Paint.DITHER_FLAG);
+        tts = new TTSUtility(context);
     }
 
     private static Rect computeBoundingBox(Ink ink) {
@@ -119,6 +121,7 @@ public class DrawCanvas extends View implements StrokeManager.ContentChangedList
             drawInk(ri.ink, recognizedStrokePaint);
             final Rect bb = computeBoundingBox(ri.ink);
             drawTextIntoBoundingBox(ri.text, bb, textPaint);
+            tts.speak(ri.text);
         }
         invalidate();
     }

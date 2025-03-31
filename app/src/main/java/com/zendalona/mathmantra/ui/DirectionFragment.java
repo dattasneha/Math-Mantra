@@ -17,6 +17,7 @@ import com.zendalona.mathmantra.databinding.FragmentDirectionBinding;
 import com.zendalona.mathmantra.listener.DirectionChangeListener;
 import com.zendalona.mathmantra.utils.DirectionDetectorUtility;
 import com.zendalona.mathmantra.utils.RandomValueGenerator;
+import com.zendalona.mathmantra.utils.SoundEffectUtility;
 import com.zendalona.mathmantra.utils.TTSUtility;
 import com.zendalona.mathmantra.viewModels.DirectionViewModel;
 
@@ -27,6 +28,9 @@ public class DirectionFragment extends Fragment implements DirectionChangeListen
     private TTSUtility tts;
     private DirectionDetectorUtility directionDetectorUtility;
     private DirectionViewModel  directionViewModel;
+    private SoundEffectUtility soundEffectUtility;
+    private float lFrequency = 1.0f;
+    private float rFrequency = 1.0f;
     public DirectionFragment() {
     }
 
@@ -34,6 +38,8 @@ public class DirectionFragment extends Fragment implements DirectionChangeListen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        directionDetectorUtility = new DirectionDetectorUtility(requireContext(),this);
+        soundEffectUtility = SoundEffectUtility.getInstance(requireContext(),2);
     }
 
     @Override
@@ -43,8 +49,10 @@ public class DirectionFragment extends Fragment implements DirectionChangeListen
         random = new RandomValueGenerator();
         tts = new TTSUtility(requireActivity());
         directionViewModel = new ViewModelProvider(this).get(DirectionViewModel.class);
-        directionDetectorUtility = new DirectionDetectorUtility(requireContext(),this);
+
         generateNewQuiz();
+        soundEffectUtility.playSound(R.raw.stereo,1.0f,0.0f,lFrequency);
+        soundEffectUtility.playSound(R.raw.stereo,0.0f,1.0f, rFrequency);
         return binding.getRoot();
     }
 
@@ -72,7 +80,7 @@ public class DirectionFragment extends Fragment implements DirectionChangeListen
         }
 
         binding.showDirectionTv.setText(question);
-
+        tts.speak(question);
 
         directionViewModel.azimuth.observe(getViewLifecycleOwner(), azimuth -> {
             if(azimuth != null) {

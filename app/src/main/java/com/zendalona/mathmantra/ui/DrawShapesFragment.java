@@ -1,6 +1,5 @@
 package com.zendalona.mathmantra.ui;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,27 +11,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 
-import com.bumptech.glide.Glide;
-import com.google.mlkit.vision.digitalink.DigitalInkRecognitionModelIdentifier;
-import com.zendalona.mathmantra.R;
-import com.zendalona.mathmantra.databinding.DialogResultBinding;
-import com.zendalona.mathmantra.databinding.FragmentDirectionBinding;
 import com.zendalona.mathmantra.databinding.FragmentDrawShapesBinding;
 import com.zendalona.mathmantra.utils.RandomValueGenerator;
-import com.zendalona.mathmantra.utils.StatusTextView;
 import com.zendalona.mathmantra.utils.StrokeManager;
 import com.zendalona.mathmantra.utils.TTSUtility;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 
 
@@ -111,6 +96,7 @@ public class DrawShapesFragment extends Fragment
 
         }
         binding.drawShapeTv.setText(question);
+        tts.speak(question);
     }
 }
 

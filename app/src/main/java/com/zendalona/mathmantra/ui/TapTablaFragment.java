@@ -30,7 +30,7 @@ public class TapTablaFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        soundEffectUtility = SoundEffectUtility.getInstance(requireContext());
+        soundEffectUtility = SoundEffectUtility.getInstance(requireContext(),1);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class TapTablaFragment extends Fragment {
     private void onTablaTapped() {
         binding.tapCount.setText(String.valueOf(++count));
         binding.tablaAnimationView.playAnimation();
-        soundEffectUtility.playSound(R.raw.drums_sound);
+        soundEffectUtility.playSound(R.raw.drums_sound,1.0f,1.0f, 1.0f);
         if(count == target) appreciateUser();
     }
 

@@ -12,20 +12,21 @@ public class SoundEffectUtility {
     private static SoundEffectUtility instance;
     private SoundPool soundPool;
     private Context context;
-    private Map<Integer, Integer> soundMap; // Map to hold sound resource IDs and their corresponding SoundPool IDs
+    private Map<Integer, Integer> soundMap;// Map to hold sound resource IDs and their corresponding SoundPool IDs
+    private int maxStreams;
 
     // Singleton pattern to ensure a single instance of SoundEffectUtility
-    public static synchronized SoundEffectUtility getInstance(Context context) {
+    public static synchronized SoundEffectUtility getInstance(Context context,int maxStreams) {
         if (instance == null) {
-            instance = new SoundEffectUtility(context.getApplicationContext());
+            instance = new SoundEffectUtility(context.getApplicationContext(),maxStreams);
         }
         return instance;
     }
 
-    private SoundEffectUtility(Context context) {
+    private SoundEffectUtility(Context context, int maxSteams) {
         this.context = context;
         this.soundMap = new HashMap<>();
-
+        this.maxStreams = maxSteams;
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
                 .setUsage(AudioAttributes.USAGE_MEDIA)
                 .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
@@ -33,7 +34,7 @@ public class SoundEffectUtility {
 
         soundPool = new SoundPool.Builder()
                 .setAudioAttributes(audioAttributes)
-                .setMaxStreams(1)
+                .setMaxStreams(maxSteams)
                 .build();
     }
 
@@ -42,14 +43,15 @@ public class SoundEffectUtility {
         soundMap.put(soundResId, soundId); // Map the resource ID to the SoundPool ID
     }
 
-    public void playSound(int soundResId) {
+    public void playSound(int soundResId, float leftVolume, float rightVolume, float rate) {
+        Log.d("sound", "hi");
         Integer soundId = soundMap.get(soundResId);
         if (soundId != null) {
-            soundPool.play(soundId, 1.0f, 1.0f, 1, 0, 1.0f);
+            soundPool.play(soundId, leftVolume, rightVolume, 1, 0, rate);
             Log.d("Sound played",soundId.toString());
         } else {
             this.loadSound(soundResId);
-            this.playSound(soundResId);
+            this.playSound(soundResId,leftVolume, rightVolume, rate);
         }
     }
 

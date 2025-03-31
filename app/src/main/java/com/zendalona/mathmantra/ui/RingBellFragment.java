@@ -36,7 +36,7 @@ public class RingBellFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        soundEffectUtility = SoundEffectUtility.getInstance(requireContext());
+        soundEffectUtility = SoundEffectUtility.getInstance(requireContext(),1);
         shakeDetectorUtility = new ShakeDetectorUtility(requireContext());
     }
 
@@ -51,7 +51,7 @@ public class RingBellFragment extends Fragment {
 
     private void ringBell() {
         binding.bellAnimationView.playAnimation();
-        soundEffectUtility.playSound(R.raw.bell_ring);
+        soundEffectUtility.playSound(R.raw.bell_ring, 1.0f, 1.0f, 1.0f);
         binding.ringCount.setText(String.valueOf(++count));
         if(count == target) appreciateUser();
     }
