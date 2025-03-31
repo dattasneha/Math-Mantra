@@ -29,8 +29,6 @@ public class DirectionFragment extends Fragment implements DirectionChangeListen
     private DirectionDetectorUtility directionDetectorUtility;
     private DirectionViewModel  directionViewModel;
     private SoundEffectUtility soundEffectUtility;
-    private float lFrequency = 1.0f;
-    private float rFrequency = 1.0f;
     public DirectionFragment() {
     }
 
@@ -51,12 +49,13 @@ public class DirectionFragment extends Fragment implements DirectionChangeListen
         directionViewModel = new ViewModelProvider(this).get(DirectionViewModel.class);
 
         generateNewQuiz();
-        soundEffectUtility.playSound(R.raw.stereo,1.0f,0.0f,lFrequency);
-        soundEffectUtility.playSound(R.raw.stereo,0.0f,1.0f, rFrequency);
+        soundEffectUtility.playSound(R.raw.stereo,1.0f,1.0f,1.0f);
+
         return binding.getRoot();
     }
 
     private void generateNewQuiz() {
+
         int topic = random.generateQuestionTopic();
         String question;
         String direction;
@@ -83,6 +82,7 @@ public class DirectionFragment extends Fragment implements DirectionChangeListen
         tts.speak(question);
 
         directionViewModel.azimuth.observe(getViewLifecycleOwner(), azimuth -> {
+
             if(azimuth != null) {
                 directionViewModel.updateCompass(azimuth);
                 binding.showDegree.setText(azimuth.intValue()+"°");

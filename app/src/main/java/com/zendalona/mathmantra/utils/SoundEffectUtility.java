@@ -47,14 +47,31 @@ public class SoundEffectUtility {
         Log.d("sound", "hi");
         Integer soundId = soundMap.get(soundResId);
         if (soundId != null) {
-            soundPool.play(soundId, leftVolume, rightVolume, 1, 0, rate);
+            soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+                @Override
+                public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                    soundPool.play(sampleId, leftVolume, rightVolume, 1, 0, rate);
+                }
+            });
             Log.d("Sound played",soundId.toString());
         } else {
             this.loadSound(soundResId);
             this.playSound(soundResId,leftVolume, rightVolume, rate);
         }
     }
+    public void setVolume(int soundResId,float leftVolume, float rightVolume){
+        Integer soundId = soundMap.get(soundResId);
+        if(soundId != null) {
+            soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+                @Override
+                public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                    soundPool.setVolume(soundId,leftVolume,rightVolume);
+                }
+            });
 
+        }
+
+    }
     public void release() {
         if (soundPool != null) {
             soundPool.release();
