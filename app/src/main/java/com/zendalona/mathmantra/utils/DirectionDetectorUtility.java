@@ -15,12 +15,10 @@ public class DirectionDetectorUtility extends SensorUtility{
     private float[] acceleration;
     private float[] geoMagnetic;
     private float currentAzimuth = 0f;
-    private SoundEffectUtility soundEffectUtility;
     private DirectionChangeListener directionChangeListener;
     public DirectionDetectorUtility(Context context, DirectionChangeListener directionChangeListener) {
         super(context);
         this.directionChangeListener = directionChangeListener;
-        soundEffectUtility = SoundEffectUtility.getInstance(context,2);
         if (getSensorManager() != null) {
             accelerometer = getSensorManager().getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
             magnetometer = getSensorManager().getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
@@ -48,11 +46,6 @@ public class DirectionDetectorUtility extends SensorUtility{
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             acceleration = event.values;
-            if(acceleration[0] > 1.5) {
-                soundEffectUtility.setVolume(R.raw.stereo,0.0f,1.0f);
-            } else if(acceleration[0] < -1.5) {
-                soundEffectUtility.setVolume(R.raw.stereo,0.0f,1.0f);
-            }
         }
         else if(event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
             geoMagnetic = event.values;

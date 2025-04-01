@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +38,7 @@ public class DirectionFragment extends Fragment implements DirectionChangeListen
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         directionDetectorUtility = new DirectionDetectorUtility(requireContext(),this);
-        soundEffectUtility = SoundEffectUtility.getInstance(requireContext(),2);
+        soundEffectUtility = SoundEffectUtility.getInstance(requireContext());
     }
 
     @Override
@@ -49,8 +50,7 @@ public class DirectionFragment extends Fragment implements DirectionChangeListen
         directionViewModel = new ViewModelProvider(this).get(DirectionViewModel.class);
 
         generateNewQuiz();
-        soundEffectUtility.playSound(R.raw.stereo,1.0f,1.0f,1.0f);
-
+        soundEffectUtility.playSound(R.raw.stereo,Integer.MAX_VALUE);
         return binding.getRoot();
     }
 
@@ -84,6 +84,31 @@ public class DirectionFragment extends Fragment implements DirectionChangeListen
         directionViewModel.azimuth.observe(getViewLifecycleOwner(), azimuth -> {
 
             if(azimuth != null) {
+                float targetDirection;
+                switch (direction) {
+                    case "North":
+                        targetDirection = 0;
+                        break;
+                    case "South":
+                        targetDirection = 180;
+                        break;
+                    case "West":
+                        targetDirection = 270;
+                        break;
+                    default:
+                        targetDirection = 90;
+                }
+                float delta = targetDirection - azimuth;
+                if(delta < 0) {
+                    delta += 360;
+                }
+                if(delta >= 180) {
+                    soundEffectUtility.setVolume(R.raw.stereo, 1.0f,0.0f);
+                    Log.d("debug", "left");
+                } else if( delta < 180) {
+                    soundEffectUtility.setVolume(R.raw.stereo, 0.0f,1.0f);
+                    Log.d("debug", "right");
+                }
                 directionViewModel.updateCompass(azimuth);
                 binding.showDegree.setText(azimuth.intValue()+"°");
 
@@ -152,11 +177,11 @@ public class DirectionFragment extends Fragment implements DirectionChangeListen
     @Override
     public void onPause() {
         super.onPause();
-        directionDetectorUtility.unregisterListener();
     }
     @Override
     public void onResume() {
         super.onResume();
+
     }
 
     @Override
@@ -164,5 +189,6 @@ public class DirectionFragment extends Fragment implements DirectionChangeListen
         super.onDestroyView();
         binding = null;
         tts.shutdown();
+        soundEffectUtility.release();
     }
 }

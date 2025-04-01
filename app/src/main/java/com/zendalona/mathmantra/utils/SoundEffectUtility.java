@@ -13,20 +13,18 @@ public class SoundEffectUtility {
     private SoundPool soundPool;
     private Context context;
     private Map<Integer, Integer> soundMap;// Map to hold sound resource IDs and their corresponding SoundPool IDs
-    private int maxStreams;
 
     // Singleton pattern to ensure a single instance of SoundEffectUtility
-    public static synchronized SoundEffectUtility getInstance(Context context,int maxStreams) {
+    public static synchronized SoundEffectUtility getInstance(Context context) {
         if (instance == null) {
-            instance = new SoundEffectUtility(context.getApplicationContext(),maxStreams);
+            instance = new SoundEffectUtility(context.getApplicationContext());
         }
         return instance;
     }
 
-    private SoundEffectUtility(Context context, int maxSteams) {
+    private SoundEffectUtility(Context context) {
         this.context = context;
         this.soundMap = new HashMap<>();
-        this.maxStreams = maxSteams;
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
                 .setUsage(AudioAttributes.USAGE_MEDIA)
                 .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
@@ -34,7 +32,7 @@ public class SoundEffectUtility {
 
         soundPool = new SoundPool.Builder()
                 .setAudioAttributes(audioAttributes)
-                .setMaxStreams(maxSteams)
+                .setMaxStreams(1)
                 .build();
     }
 
@@ -43,32 +41,26 @@ public class SoundEffectUtility {
         soundMap.put(soundResId, soundId); // Map the resource ID to the SoundPool ID
     }
 
-    public void playSound(int soundResId, float leftVolume, float rightVolume, float rate) {
+    public void playSound(int soundResId,int loop) {
         Log.d("sound", "hi");
         Integer soundId = soundMap.get(soundResId);
         if (soundId != null) {
             soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
                 @Override
                 public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
-                    soundPool.play(sampleId, leftVolume, rightVolume, 1, 0, rate);
+                    soundPool.play(sampleId, 1.0f, 1.0f, 1, loop, 1.0f);
                 }
             });
             Log.d("Sound played",soundId.toString());
         } else {
             this.loadSound(soundResId);
-            this.playSound(soundResId,leftVolume, rightVolume, rate);
+            this.playSound(soundResId,loop);
         }
     }
     public void setVolume(int soundResId,float leftVolume, float rightVolume){
         Integer soundId = soundMap.get(soundResId);
         if(soundId != null) {
-            soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
-                @Override
-                public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
-                    soundPool.setVolume(soundId,leftVolume,rightVolume);
-                }
-            });
-
+            soundPool.setVolume(soundId,leftVolume,rightVolume);
         }
 
     }
